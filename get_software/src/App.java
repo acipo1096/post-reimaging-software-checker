@@ -1,55 +1,35 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class App {
-    public static void main(String[] args) throws IOException{
-
-        // Can I create an array, or something proper, to compare the installed software with?
-        // EDIT: List might be better right now so I can compare
-        List<String> software = new ArrayList<String>();
-        software.add("Adobe Acrobat (64-bit)");
-        software.add("Adobe Creative Cloud");
-        software.add("Cisco AnyConnect Secure Mobility Client");
-
-        System.out.println(software);
+    public static void main(String[] args) {
+        Software software = new Software();
+        PowerShell powershell = new PowerShell();
 
         System.out.println("");
+        System.out.println("CHECKING FOR MISSING SOFTWARE...");
 
+        // Subtracts the software listed on the computer from the software from the main list
+        List<String> softwareMasterList = software.displaySoftware();
+        List<String> sortedLine = powershell.showPCSoftware();
+        softwareMasterList.removeAll(sortedLine);
 
-        // Get version
-        // Thanks for this script: https://superuser.com/questions/1603763/how-can-i-run-a-single-command-to-show-all-installed-applications-in-windows-10
-        String command2 = "powershell.exe foreach ($UKey in 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKLM:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*'){foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)){if($Product.DisplayName -and $Product.SystemComponent -ne 1){$Product.DisplayName}}}";
-        
-        // Executes the command but returns a memory location only - no output
-        Process powerShellProcess = Runtime.getRuntime().exec(command2);
-
-        // Get the results
-        powerShellProcess.getOutputStream().close();
-        String line;
-        int count = 0;
-        BufferedReader stdout = new BufferedReader(new InputStreamReader(powerShellProcess.getInputStream()));
-
-        // At this point, the software has been collected, but it's not in alphabetical order
-
-        // Create new List
-        List<String> sortedLine = new ArrayList<String>();
-
-        // Append each list item to the Java List and increment the total # of software
-        while ((line = stdout.readLine()) != null) {
-            sortedLine.add(line);
-            count++;
-
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        // Sort and print the software list & count
-        Collections.sort(sortedLine);
-        for (String element : sortedLine) {
-            System.out.println(element);
+
+        // Returns the missing software and the count of each
+        if (softwareMasterList.size() == 0) {
+            System.out.println("Scan complete. All software successfully installed!");
         }
-        System.out.println("------------------------------");
-        System.out.println("Total Software Installed: " + count);
+        else {
+            System.out.println("Scan complete. This computer is missing " + softwareMasterList.size() + " software: ");
+            for (String element2 : softwareMasterList) {
+                System.out.println(element2);
+            }
+        }
+
     }
 }
