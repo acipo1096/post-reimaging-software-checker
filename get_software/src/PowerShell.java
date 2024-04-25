@@ -8,6 +8,7 @@ public class PowerShell {
 
     private String command = "powershell.exe foreach ($UKey in 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKLM:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*'){foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)){if($Product.DisplayName -and $Product.SystemComponent -ne 1){$Product.DisplayName}}}";
     private String hostname = "powershell.exe hostname";
+    private String winstore = "powershell.exe (Get-AppxPackage -Name *XD*).Name";
     private List<String> sortedLine = new ArrayList<String>();
 
     public PowerShell() {
@@ -22,6 +23,10 @@ public class PowerShell {
         return hostname;
     }
 
+    public String getWinstore() {
+        return winstore;
+    }
+
     public List<String> getSortedLine() {
         return sortedLine;
     }
@@ -34,8 +39,12 @@ public class PowerShell {
             // Executes the command but returns a memory location only - no output
             Process powerShellProcess = Runtime.getRuntime().exec(command);
             Process powerShellHostname = Runtime.getRuntime().exec(hostname);
+            Process powerShellWinstore = Runtime.getRuntime().exec(winstore);
             powerShellHostname.getOutputStream().close();
+            powerShellWinstore.getOutputStream().close();
             BufferedReader hostOut = new BufferedReader((new InputStreamReader(powerShellHostname.getInputStream())));
+            BufferedReader winOut = new BufferedReader((new InputStreamReader(powerShellWinstore.getInputStream())));
+
 
             // Get the results
             powerShellProcess.getOutputStream().close();
@@ -47,14 +56,17 @@ public class PowerShell {
             System.out.println("------------------------------");
 
             // At this point, the software has been collected, but it's not in alphabetical order
-            // To return in alphabetical order, append each list item to the Java List and increment the total # of software 
+            // Append each list item to the Java List and increment the total # of software 
             while ((line = stdout.readLine()) != null) {
                 sortedLine.add(line);
                 count++;
 
             }
 
-            // Sort and print the software list & count
+            // Append Windows store apps to list
+            sortedLine.add(winstore);
+
+            // Sort alphabetically  and print the software list & count
             Collections.sort(sortedLine);
             for (String element : sortedLine) {
                 System.out.println(element);
