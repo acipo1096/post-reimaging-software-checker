@@ -64,7 +64,7 @@ public class PowerShell {
             }
 
             // Append Windows store apps to list
-            sortedLine.add(winstore);
+            sortedLine.add(winOut.toString());
 
             // Sort alphabetically  and print the software list & count
             Collections.sort(sortedLine);
