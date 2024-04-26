@@ -8,7 +8,8 @@ public class PowerShell {
 
     private String command = "powershell.exe foreach ($UKey in 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKLM:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*'){foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)){if($Product.DisplayName -and $Product.SystemComponent -ne 1){$Product.DisplayName}}}";
     private String hostname = "powershell.exe hostname";
-    private String winstore = "powershell.exe (Get-AppxPackage -Name *XD*).Name";
+    private String adobeXD = "powershell.exe (Get-AppxPackage -Name \"*XD\").Name";
+    private String completeAnatomy = "powershell.exe (Get-AppxPackage -Name \"*Anatomy*\").Name\"";
     private List<String> sortedLine = new ArrayList<String>();
 
     public PowerShell() {
@@ -23,8 +24,12 @@ public class PowerShell {
         return hostname;
     }
 
-    public String getWinstore() {
-        return winstore;
+    public String getAdobeXD() {
+        return adobeXD;
+    }
+
+    public String getCompleteAnatomy() {
+        return completeAnatomy;
     }
 
     public List<String> getSortedLine() {
@@ -39,12 +44,16 @@ public class PowerShell {
             // Executes the command but returns a memory location only - no output
             Process powerShellProcess = Runtime.getRuntime().exec(command);
             Process powerShellHostname = Runtime.getRuntime().exec(hostname);
-            Process powerShellWinstore = Runtime.getRuntime().exec(winstore);
-            powerShellHostname.getOutputStream().close();
-            powerShellWinstore.getOutputStream().close();
-            BufferedReader hostOut = new BufferedReader((new InputStreamReader(powerShellHostname.getInputStream())));
-            BufferedReader winOut = new BufferedReader((new InputStreamReader(powerShellWinstore.getInputStream())));
+            Process powerShellAdobeXD = Runtime.getRuntime().exec(adobeXD);
+            Process powerShellCompleteAnatomy= Runtime.getRuntime().exec(completeAnatomy);
 
+            powerShellHostname.getOutputStream().close();
+            powerShellAdobeXD.getOutputStream().close();
+            powerShellCompleteAnatomy.getOutputStream().close();
+
+            BufferedReader hostOut = new BufferedReader((new InputStreamReader(powerShellHostname.getInputStream())));
+            BufferedReader adobeXDOut = new BufferedReader((new InputStreamReader(powerShellAdobeXD.getInputStream())));
+            BufferedReader completeAnatomyOut = new BufferedReader((new InputStreamReader(powerShellCompleteAnatomy.getInputStream())));
 
             // Get the results
             powerShellProcess.getOutputStream().close();
@@ -57,14 +66,25 @@ public class PowerShell {
 
             // At this point, the software has been collected, but it's not in alphabetical order
             // Append each list item to the Java List and increment the total # of software 
+            
             while ((line = stdout.readLine()) != null) {
                 sortedLine.add(line);
                 count++;
 
             }
 
-            // Append Windows store apps to list
-            sortedLine.add(winOut.toString());
+            // Append Windows store apps to list, but only if they exist. Need to use readLine() to convert type from BufferedReader to String
+            // Also need to declare new String variables, otherwise the program throws an error
+            String adobeXDString;
+            String completeAnatomyString;
+
+            while((adobeXDString = adobeXDOut.readLine()) != null) {
+                sortedLine.add(adobeXDString);
+            }
+
+            while ((completeAnatomyString = completeAnatomyOut.readLine()) != null) {
+                sortedLine.add(completeAnatomyString);
+            }
 
             // Sort alphabetically  and print the software list & count
             Collections.sort(sortedLine);

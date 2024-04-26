@@ -32,11 +32,13 @@ public class Software {
         softwareMaster.add("Adobe Prelude 2022");
         softwareMaster.add("Adobe Premiere Pro 2023");
         softwareMaster.add("Adobe Premiere Rush");
+        softwareMaster.add("Adobe.XD"); // Needs to match name in Windows backend
         softwareMaster.add("Audacity 3.5.0");
         softwareMaster.add("Brackets");
         softwareMaster.add("Cisco AnyConnect Network Access Manager");
         softwareMaster.add("Cisco AnyConnect Secure Mobility Client ");
         softwareMaster.add("Citrix Receiver 4.5");
+        softwareMaster.add("Complete Anatomy");
         softwareMaster.add("CrowdStrike Windows Sensor");
         softwareMaster.add("EndNote 21");
         softwareMaster.add("Google Chrome");
