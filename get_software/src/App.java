@@ -14,6 +14,7 @@ public class App {
         List<String> sortedLine = powershell.showPCSoftware();
         softwareMasterList.removeAll(sortedLine);
 
+        // Pauses the program for one second for readability
         try {
             TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {

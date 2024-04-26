@@ -57,7 +57,7 @@ public class PowerShell {
             BufferedReader stdout = new BufferedReader(new InputStreamReader(powerShellProcess.getInputStream()));
 
             System.out.println("SOFTWARE INSTALLED ON " + hostname2);
-            System.out.println("------------------------------");
+            System.out.println("----------------------------------------");
 
             // At this point, the software has been collected, but it's not in alphabetical order
             // Append each list item to the Java List and increment the total # of software 

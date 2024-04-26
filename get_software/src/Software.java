@@ -88,7 +88,7 @@ public class Software {
         softwareMaster.add("Zoom Workplace (64-bit)");
 
         // If this is a Library PC, add PaperCut/PridePrint to list of software to check for
-        // Why do it this way? What if software is installed and shouldn't be? The program won't catch it
+        // Why do it this way? What if software is installed and shouldn't be? The program won't catch it.
         if (hostnameCheck != "SOM0219001" || hostnameCheck != "SOM0219002" || hostnameCheck != "SOM0219003"
                 || hostnameCheck != "SOM0219004") {
             softwareMaster.remove("PaperCut MF Client");
