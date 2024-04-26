@@ -2,7 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Software {
+    Hostname host = new Hostname();
+
     private List<String> softwareMaster = new ArrayList<String>();
+
+    String hostnameCheck = host.showHostname();
 
     public Software() {
         addSoftware();
@@ -64,6 +68,7 @@ public class Software {
         softwareMaster.add("MySQL Connector/ODBC 5.2(a)");
         softwareMaster.add("Notepad++ (64-bit x64)");
         softwareMaster.add("ParseHub 54.0.1 (x86 en-US)");
+        softwareMaster.add("PaperCut MF Client");
         softwareMaster.add("Poll Everywhere");
         softwareMaster.add("R for Windows 4.3.2");
         softwareMaster.add("RStudio");
@@ -71,10 +76,33 @@ public class Software {
         softwareMaster.add("SALT 20 Clinical");
         softwareMaster.add("SALT PDF Printer");
         softwareMaster.add("Sassafras KeyServer Platform Client");
+        softwareMaster.add("SMART Education Software");
+        softwareMaster.add("SMART Gallery Essentials");
+        softwareMaster.add("SMART Ink");
+        softwareMaster.add("SMART Lesson Activity Toolkit");
+        softwareMaster.add("SMART Notebook");
+        softwareMaster.add("SMART Product Drivers");
         softwareMaster.add("UXP WebView Support");
         softwareMaster.add("Universal Imaging Utility - Live Version");
         softwareMaster.add("VLC media player");
         softwareMaster.add("Zoom Workplace (64-bit)");
+
+        // If this is a Library PC, add PaperCut/PridePrint to list of software to check for
+        // Why do it this way? What if software is installed and shouldn't be? The program won't catch it
+        if (hostnameCheck != "SOM0219001" || hostnameCheck != "SOM0219002" || hostnameCheck != "SOM0219003"
+                || hostnameCheck != "SOM0219004") {
+            softwareMaster.remove("PaperCut MF Client");
+        }
+
+        // If this is not a MET PC, remove SMART from the list of software to check for
+        if (hostnameCheck != "SOMW134POD" || hostnameCheck != "SOM0201POD") {
+            softwareMaster.remove("SMART Education Software");
+            softwareMaster.remove("SMART Gallery Essentials");
+            softwareMaster.remove("SMART Ink");
+            softwareMaster.remove("SMART Lesson Activity Toolkit");
+            softwareMaster.remove("SMART Notebook");
+            softwareMaster.remove("SMART Product Drivers");
+        }
     }       
 
     public List<String> displaySoftware() {

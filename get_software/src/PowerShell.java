@@ -6,8 +6,10 @@ import java.util.List;
 
 public class PowerShell {
 
+    Hostname hostname = new Hostname();
+    String hostname2 = hostname.showHostname();
+
     private String command = "powershell.exe foreach ($UKey in 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKLM:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*'){foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)){if($Product.DisplayName -and $Product.SystemComponent -ne 1){$Product.DisplayName}}}";
-    private String hostname = "powershell.exe hostname";
     private String adobeXD = "powershell.exe (Get-AppxPackage -Name \"*XD\").Name";
     private String completeAnatomy = "powershell.exe (Get-AppxPackage -Name \"*Anatomy*\").Name\"";
     private List<String> sortedLine = new ArrayList<String>();
@@ -18,10 +20,6 @@ public class PowerShell {
     
     public String getCommand() {
         return command;
-    }
-
-    public String getHostname() {
-        return hostname;
     }
 
     public String getAdobeXD() {
@@ -43,15 +41,12 @@ public class PowerShell {
 
             // Executes the command but returns a memory location only - no output
             Process powerShellProcess = Runtime.getRuntime().exec(command);
-            Process powerShellHostname = Runtime.getRuntime().exec(hostname);
             Process powerShellAdobeXD = Runtime.getRuntime().exec(adobeXD);
             Process powerShellCompleteAnatomy= Runtime.getRuntime().exec(completeAnatomy);
 
-            powerShellHostname.getOutputStream().close();
             powerShellAdobeXD.getOutputStream().close();
             powerShellCompleteAnatomy.getOutputStream().close();
 
-            BufferedReader hostOut = new BufferedReader((new InputStreamReader(powerShellHostname.getInputStream())));
             BufferedReader adobeXDOut = new BufferedReader((new InputStreamReader(powerShellAdobeXD.getInputStream())));
             BufferedReader completeAnatomyOut = new BufferedReader((new InputStreamReader(powerShellCompleteAnatomy.getInputStream())));
 
@@ -61,7 +56,7 @@ public class PowerShell {
             int count = 0;
             BufferedReader stdout = new BufferedReader(new InputStreamReader(powerShellProcess.getInputStream()));
 
-            System.out.println("SOFTWARE INSTALLED ON " + hostOut.readLine());
+            System.out.println("SOFTWARE INSTALLED ON " + hostname2);
             System.out.println("------------------------------");
 
             // At this point, the software has been collected, but it's not in alphabetical order
@@ -85,6 +80,13 @@ public class PowerShell {
             while ((completeAnatomyString = completeAnatomyOut.readLine()) != null) {
                 sortedLine.add(completeAnatomyString);
             }
+
+            // if (hostnameString != "SOM0219001" || hostnameString  != "SOM0219002" || hostnameString != "SOM0219003" || hostnameString != "SOM0219004") {
+            //     sortedLine.remove("PaperCut MF Client");
+            //     System.out.println(sortedLine.remove("PaperCut MF Client"));
+            //     System.out.println(hostnameString);
+            //     System.out.println(hostnameString.getClass().getSimpleName());
+            // }
 
             // Sort alphabetically  and print the software list & count
             Collections.sort(sortedLine);

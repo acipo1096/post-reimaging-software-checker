@@ -3,8 +3,8 @@ import java.util.concurrent.TimeUnit;
 
 public class App {
     public static void main(String[] args) {
-        Software software = new Software();
         PowerShell powershell = new PowerShell();
+        Software software = new Software();
 
         System.out.println("");
         System.out.println("CHECKING FOR MISSING SOFTWARE...");
