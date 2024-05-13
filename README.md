@@ -14,6 +14,13 @@ When it came time to upgrade our computers to Windows 11 in 2024, I thought - "w
 
 I could have probably written this program in Python or PowerShell, but I've been trying to improve my Java skills. All my knowledge in Java up to this point was limited to homework assignments. This project really helped me to better understand Java classes, constructors, and get/set methods.
 
+## Features
+
+- The program runs as part of a Post-Reimaging Checker I created (featured in another repo).
+- Once executed, the program runs a PowerShell script to grab all software installed on the current PC. The software is exported into a Java list to be printed alphabetically
+- A separate class hosts a master list of software that should be installed on the computer. The currently installed software is checked against the master list, and any missing software is printed out
+- The program saves the results to a .txt file, titled with the hostname, for easy analysis of results
+
 ## Quick Start
 
 Simply run the .jar file using ```java -jar CheckSoftware```
@@ -22,7 +29,3 @@ Simply run the .jar file using ```java -jar CheckSoftware```
 
 - Can be run by exporting to a .jar file
 - I created a separate batch script (not shown) so this program could be run from a USB drive
-
-## Future Plans
-
-I may develop this further to compare and check if software is installed on a Windows machine post-reimaging
