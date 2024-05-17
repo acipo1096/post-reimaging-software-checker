@@ -92,15 +92,15 @@ public class Software {
         softwareMaster.add("VLC media player");
         softwareMaster.add("Zoom Workplace (64-bit)");
 
-        // If this is a Library PC, add PaperCut/PridePrint to list of software to check for
+        // If this is a Library PC, keep PaperCut/PridePrint to list of software to check for
         // Why do it this way? What if software is installed and shouldn't be? The program won't catch it.
-        if (hostnameCheck != "SOM0219001" || hostnameCheck != "SOM0219002" || hostnameCheck != "SOM0219003"
-                || hostnameCheck != "SOM0219004" || hostnameCheck != "MJ0J1RHP") {
+        if (!"SOM0219001".equals(hostnameCheck) && !"SOM0219002".equals(hostnameCheck) && !"SOM0219003".equals(hostnameCheck) 
+            && !"SOM0219004".equals(hostnameCheck) && !"MJ0J1RHP".equals(hostnameCheck)) {
             softwareMaster.remove("PaperCut MF Client");
         }
 
         // If this is not a MET PC, remove SMART from the list of software to check for
-        if (hostnameCheck != "SOMW134POD" || hostnameCheck != "SOM0201POD") {
+        if (!"SOMW134POD".equals(hostnameCheck) && !"SOM0201POD".equals(hostnameCheck)) {
             softwareMaster.remove("SMART Education Software");
             softwareMaster.remove("SMART Gallery Essentials");
             softwareMaster.remove("SMART Ink");
