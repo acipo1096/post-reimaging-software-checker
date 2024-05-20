@@ -9,9 +9,12 @@ public class PowerShell {
     Hostname hostname = new Hostname();
     String hostname2 = hostname.showHostname();
 
+    // Gets software that can be viewed in Control Panel
     private String command = "powershell.exe foreach ($UKey in 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKLM:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*','HKCU:\\SOFTWARE\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*'){foreach ($Product in (Get-ItemProperty $UKey -ErrorAction SilentlyContinue)){if($Product.DisplayName -and $Product.SystemComponent -ne 1){$Product.DisplayName}}}";
-    private String adobeXD = "powershell.exe (Get-AppxPackage -Name \"*XD\").Name";
-    private String completeAnatomy = "powershell.exe (Get-AppxPackage -Name \"*Anatomy*\").Name\"";
+    // For privacy, the software name has been hidden
+
+    // Gets software from Windows Apps & Features that don't appear in Control Panel
+    private String softwareName = "powershell.exe (Get-AppxPackage -Name \"*softwareName\").Name";
     private List<String> sortedLine = new ArrayList<String>();
 
     public PowerShell() {
@@ -22,12 +25,8 @@ public class PowerShell {
         return command;
     }
 
-    public String getAdobeXD() {
-        return adobeXD;
-    }
-
-    public String getCompleteAnatomy() {
-        return completeAnatomy;
+    public String getSoftwareName() {
+        return softwareName;
     }
 
     public List<String> getSortedLine() {
@@ -41,14 +40,11 @@ public class PowerShell {
 
             // Executes the command but returns a memory location only - no output
             Process powerShellProcess = Runtime.getRuntime().exec(command);
-            Process powerShellAdobeXD = Runtime.getRuntime().exec(adobeXD);
-            Process powerShellCompleteAnatomy= Runtime.getRuntime().exec(completeAnatomy);
+            Process powershellSoftwareName = Runtime.getRuntime().exec(softwareName);
 
-            powerShellAdobeXD.getOutputStream().close();
-            powerShellCompleteAnatomy.getOutputStream().close();
+            powershellSoftwareName.getOutputStream().close();
 
-            BufferedReader adobeXDOut = new BufferedReader((new InputStreamReader(powerShellAdobeXD.getInputStream())));
-            BufferedReader completeAnatomyOut = new BufferedReader((new InputStreamReader(powerShellCompleteAnatomy.getInputStream())));
+            BufferedReader softwareNameOut = new BufferedReader((new InputStreamReader(powershellSoftwareName.getInputStream())));
 
             // Get the results
             powerShellProcess.getOutputStream().close();
@@ -70,23 +66,11 @@ public class PowerShell {
 
             // Append Windows store apps to list, but only if they exist. Need to use readLine() to convert type from BufferedReader to String
             // Also need to declare new String variables, otherwise the program throws an error
-            String adobeXDString;
-            String completeAnatomyString;
+            String softwareNameString;
 
-            while((adobeXDString = adobeXDOut.readLine()) != null) {
-                sortedLine.add(adobeXDString);
+            while((softwareNameString = softwareNameOut.readLine()) != null) {
+                sortedLine.add(softwareNameString);
             }
-
-            while ((completeAnatomyString = completeAnatomyOut.readLine()) != null) {
-                sortedLine.add(completeAnatomyString);
-            }
-
-            // if (hostnameString != "SOM0219001" || hostnameString  != "SOM0219002" || hostnameString != "SOM0219003" || hostnameString != "SOM0219004") {
-            //     sortedLine.remove("PaperCut MF Client");
-            //     System.out.println(sortedLine.remove("PaperCut MF Client"));
-            //     System.out.println(hostnameString);
-            //     System.out.println(hostnameString.getClass().getSimpleName());
-            // }
 
             // Sort alphabetically  and print the software list & count
             Collections.sort(sortedLine);
