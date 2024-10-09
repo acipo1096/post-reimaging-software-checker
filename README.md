@@ -29,3 +29,6 @@ Simply run the .jar file using ```java -jar CheckSoftware```
 
 - Can be run by exporting to a .jar file
 - I created a separate batch script (not shown) so this program could be run from a USB drive
+
+## Things I Would Change
+If I was to start this project over, instead of hardcoding the list of software into the "Software" class, I would have developed the program to read the software list from an external file.
