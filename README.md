@@ -1,4 +1,4 @@
-# Get Windows Software
+# Post-Reimaging Software Checker
 
 A simple Java program that runs a PowerShell script to get all Windows programs (as listed in Control Panel, so it omits extra programs not typically seen by the end user).
 
