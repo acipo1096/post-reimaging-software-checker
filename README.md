@@ -1,10 +1,10 @@
 # Post-Reimaging Software Checker
 
-A simple Java program that runs a PowerShell script to get all Windows programs (as listed in Control Panel, so it omits extra programs not typically seen by the end user).
+A Java program that runs a PowerShell script to get all Windows programs listed in the Control Panel and "Apps & Features."
 
 The list is then sorted using a List and output, along with the total count.
 
-Useful for quickly getting a text list of all installed software on a computer
+Useful for quickly getting a text list of all installed software on a computer.
 
 ## Motivation
 
@@ -12,7 +12,7 @@ I was tasked to reimage my workplace's computers in the Spring of 2022. It was m
 
 When it came time to upgrade our computers to Windows 11 in 2024, I thought - "why not try to automate this?"
 
-I could have probably written this program in Python or PowerShell, but I've been trying to improve my Java skills. All my knowledge in Java up to this point was limited to homework assignments. This project really helped me to better understand Java classes, constructors, and get/set methods.
+I could have probably written this program in Python or PowerShell, but at the time I was focusing on improving my Java skills. All my knowledge in Java up to this point was limited to homework assignments. This project really helped me to better understand Java classes, constructors, and get/set methods in a practical setting.
 
 ## Features
 
